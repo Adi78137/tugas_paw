@@ -1,0 +1,14 @@
+[
+{
+"pertemuan": 1,
+"title": "exercise 01",
+"status": "Terbuka",
+"folder": "profil"
+},
+{
+"pertemuan": 2,
+"title": "Tugas Form Pendaftaran",
+"status": "Terbuka",
+"folder": "tugas-form"
+}
+]

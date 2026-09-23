@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kumpulan Tugas PAW</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+
+  </head>
+  <body>
+    <nav class="glass-panel sticky-top shadow-sm py-2">
+      <div class="container-lg">
+        <div class="d-flex justify-content-between align-items-center py-2">
+          <div class="d-flex align-items-center gap-3">
+            <div class="bg-primary bg-opacity-10 p-2 rounded-3 text-primary">
+              <i class="fa-solid fa-laptop-code fs-5"></i>
+            </div>
+            <span class="fw-bold fs-4 text-dark mb-0">Adi Karunia</span>
+          </div>
+          <div class="text-secondary small fw-medium">Mata Kuliah PAW</div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="flex-grow-1 container-lg py-5">
+      <div class="text-center mb-5 mt-3">
+        <h1 class="display-5 fw-bold text-dark mb-2">
+          Arsip Tugas Mata Kuliah<br />
+          <span class="text-primary">Pengembangan Aplikasi Web</span>
+        </h1>
+
+        <!-- Tombol Scroll ke Tugas -->
+        <a href="#tasks-container" class="btn btn-primary btn-lg rounded-pill px-4 py-2 mt-3 mb-4 shadow-sm fw-medium fs-6"> <i class="fa-solid fa-arrow-down me-2"></i>Lihat Daftar Tugas </a>
+
+        <div class="card bg-white shadow-sm border rounded-4 mx-auto text-start" style="max-width: 600px">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+              <div class="bg-primary bg-opacity-10 p-2 rounded-circle text-primary me-3 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px">
+                <i class="fa-solid fa-user-graduate fs-5"></i>
+              </div>
+              <h5 class="fw-bold mb-0 text-dark">Biodata</h5>
+            </div>
+            <div class="row g-3">
+              <div class="col-6 col-md-4">
+                <span class="text-muted small fw-medium d-block mb-1">Nama Lengkap</span>
+                <span class="fw-semibold text-dark">Adi Karunia</span>
+              </div>
+              <div class="col-6 col-md-4">
+                <span class="text-muted small fw-medium d-block mb-1">NIM</span>
+                <span class="fw-semibold text-dark">1247050127</span>
+              </div>
+              <div class="col-6 col-md-4">
+                <span class="text-muted small fw-medium d-block mb-1">Kelas / Smt</span>
+                <span class="fw-semibold text-dark">IF-5A / 5</span>
+              </div>
+              <div class="col-12 col-md-6">
+                <span class="text-muted small fw-medium d-block mb-1">Jurusan</span>
+                <span class="fw-semibold text-dark">Teknik Informatika</span>
+              </div>
+              <div class="col-12 col-md-6">
+                <span class="text-muted small fw-medium d-block mb-1">Kampus</span>
+                <span class="fw-semibold text-dark">UIN Sunan Gunung Djati Bandung</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Area List -->
+      <div id="tasks-container" class="d-flex flex-column">
+        <!-- Loading State -->
+        <div id="loading-state" class="text-center py-5">
+          <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="text-muted fw-medium">Memuat daftar pertemuan...</p>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="d-none text-center py-5 bg-white rounded-4 border border-2 border-dashed mt-4">
+        <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-4 border" style="width: 80px; height: 80px">
+          <i class="fa-regular fa-folder-open text-secondary fs-1"></i>
+        </div>
+        <h3 class="fs-4 fw-bold text-dark">Belum ada tugas</h3>
+        <p class="text-muted mx-auto mb-0" style="max-width: 400px">Tambahkan tugas baru di file <code class="bg-light px-2 py-1 rounded text-danger">data.json</code>.</p>
+      </div>
+    </main>
+
+    <footer class="bg-white border-top py-4 mt-5">
+      <div class="container-lg d-flex justify-content-center align-items-center">
+        <p class="small text-muted mb-0">&copy; <span id="current-year"></span> Adi Karunia. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const tasksContainer = document.getElementById("tasks-container");
+      const emptyState = document.getElementById("empty-state");
+
+      document.getElementById("current-year").textContent = new Date().getFullYear();
+
+      function renderTasks(tasks) {
+        tasksContainer.innerHTML = "";
+        emptyState.classList.add("d-none");
+
+        // Generate 16 Pertemuan
+        for (let i = 1; i <= 16; i++) {
+          const item = document.createElement("div");
+          item.className = "card task-list-item shadow-sm overflow-hidden";
+          const collapseId = `collapsePertemuan${i}`;
+
+          const tasksForThisMeeting = tasks.filter((task) => parseInt(task.pertemuan) === i);
+          let tasksHtml = "";
+
+          if (tasksForThisMeeting.length > 0) {
+            tasksForThisMeeting.forEach((task) => {
+              const folderPath = task.folder ? `${task.folder}/` : "#";
+
+              tasksHtml += `
+          <div class="inner-task-card bg-white rounded-3 p-3 d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center gap-3">
+              <i class="fa-regular fa-file text-secondary fs-5"></i>
+              <span class="fw-medium text-dark">${task.title}</span>
+            </div>
+            <div>
+              <a href="${folderPath}" class="btn btn-primary btn-sm px-4 rounded-pill fw-medium">
+                Lihat
+              </a>
+            </div>
+          </div>
+        `;
+            });
+          } else {
+            tasksHtml = `
+        <div class="text-center py-3 text-muted small">
+          <i class="fa-solid fa-minus me-2"></i> Belum ada tugas untuk pertemuan ini.
+        </div>
+      `;
+          }
+
+          item.innerHTML = `
+      <button class="task-list-btn" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false">
+        <i class="fa-solid fa-chevron-right me-3 text-secondary"></i>
+        Pertemuan ${i}
+      </button>
+      
+      <div id="${collapseId}" class="collapse">
+        <div class="card-body bg-transparent px-4 pb-4 pt-1">
+          ${tasksHtml}
+        </div>
+      </div>
+    `;
+          tasksContainer.appendChild(item);
+        }
+      }
+
+      async function loadTasks() {
+        try {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          const response = await fetch("data.json");
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+          const tasks = await response.json();
+          renderTasks(tasks);
+        } catch (error) {
+          console.error("Gagal memuat tugas:", error);
+          tasksContainer.innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-danger d-flex align-items-start rounded-4 shadow-sm p-4" role="alert">
+                            <i class="fa-solid fa-triangle-exclamation fs-4 me-3 mt-1"></i>
+                            <div>
+                                <h4 class="alert-heading fw-bold">Gagal memuat data.json</h4>
+                                <p class="mb-3">Buka menggunakan <b>Live Server</b> di VS Code agar file JSON dapat terbaca.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+        }
+      }
+
+      loadTasks();
+    </script>
+  </body>
+</html>
