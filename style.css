@@ -1,68 +1,236 @@
-body {
-    font-family: "Inter", sans-serif;
-    background-color: #f8fafc;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-/* Efek kaca (Glassmorphism) untuk Navbar */
-.glass-panel {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
-}
-
-/* Tampilan List ala LMS (eKnows) */
-.task-list-item {
-    background-color: #f4f6f9;
-    border-radius: 12px !important;
-    border: none;
-    margin-bottom: 12px;
-}
-
-.task-list-btn {
-    background-color: transparent;
-    border: none;
-    width: 100%;
-    text-align: left;
-    padding: 1.25rem 1.5rem;
-    font-weight: 600;
-    color: #1e293b;
-    display: flex;
-    align-items: center;
-    border-radius: 12px;
-    transition: all 0.2s ease-in-out;
-}
-
-.task-list-btn:hover {
-    background-color: #e2e8f0;
-}
-
-/* Animasi rotasi panah (chevron) saat diklik */
-.task-list-btn[aria-expanded="true"] .fa-chevron-right {
-    transform: rotate(90deg);
-}
-
-.task-list-btn .fa-chevron-right {
-    transition: transform 0.3s ease;
-    font-size: 0.9rem;
-}
-
-/* Desain untuk kotak tugas di dalam collapse */
-.inner-task-card {
-    transition: all 0.2s;
-    border: 1px solid #dee2e6;
-}
-
-.inner-task-card:hover {
-    border-color: #0d6efd;
-    background-color: #f8f9fa !important;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+:root {
+  --app-bg: #f8fafc;
+  --surface: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --brand-primary: #2563eb;
+  --brand-primary-hover: #1d4ed8;
+  --brand-subtle: #eff6ff;
+  --border-color: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --radius-card: 14px;
+  --radius-inner: 10px;
+  --radius-btn: 8px;
 }
 
 html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 90px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--app-bg);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Accessible interactive elements */
+a,
+button {
+  cursor: pointer;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+/* Header & Nav */
+.site-header {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-color);
+  z-index: 1020;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-inner);
+  background: var(--brand-subtle);
+  color: var(--brand-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Biodata Card */
+.biodata-card {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  max-width: 640px;
+}
+
+.biodata-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--brand-subtle);
+  color: var(--brand-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.data-label {
+  font-size: 0.775rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  margin-bottom: 0.25rem;
+}
+
+.data-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0;
+  word-break: break-word;
+}
+
+/* Task Accordion List */
+.task-list-item {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card) !important;
+  margin-bottom: 0.75rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.task-list-item:hover {
+  border-color: var(--border-hover);
+}
+
+.task-list-btn {
+  background: transparent;
+  border: none;
+  width: 100%;
+  min-height: 52px;
+  padding: 0.875rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-radius: var(--radius-card);
+  transition: background-color 0.15s ease;
+}
+
+.task-list-btn:hover {
+  background-color: #f1f5f9;
+}
+
+.task-chevron {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+  margin-right: 0.75rem;
+}
+
+.task-list-btn[aria-expanded="true"] .task-chevron {
+  transform: rotate(90deg);
+}
+
+.task-badge-has {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--brand-subtle);
+  color: var(--brand-primary);
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+}
+
+.task-badge-empty {
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: #f8fafc;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+}
+
+/* Inner Task Item */
+.inner-task-card {
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-inner);
+  padding: 0.875rem 1rem;
+  margin-bottom: 0.5rem;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.inner-task-card:hover {
+  background: #ffffff;
+  border-color: #93c5fd;
+}
+
+.inner-task-title {
+  font-size: 0.925rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.btn-task-action {
+  min-height: 40px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: var(--radius-btn);
+  padding: 0.45rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  text-decoration: none;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 70px;
+  }
+
+  .biodata-card {
+    border-radius: var(--radius-inner);
+  }
+
+  .task-list-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .inner-task-card {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 0.75rem;
+  }
+
+  .inner-task-action-wrapper {
+    width: 100%;
+  }
+
+  .btn-task-action,
+  .badge-current-page {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header .fs-5 {
+    font-size: 1rem !important;
+  }
 }
