@@ -13,10 +13,10 @@ section {
 
 /* ==================== NAVBAR ==================== */
 header {
-    position: sticky;
-    top: 0;
+
+
     z-index: 1030;
-    /* Standar z-index Bootstrap untuk navbar */
+
 }
 
 .navbar {
