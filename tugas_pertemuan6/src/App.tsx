@@ -3,6 +3,7 @@ import type { Tugas } from './types'
 import { muatDariStorage, simpanKeStorage } from './utils/storage'
 import { TaskForm } from './components/TaskForm'
 import { TaskList } from './components/TaskList'
+import { Penjelasan } from './components/Penjelasan'
 import { Footer } from './components/Footer'
 import './App.css'
 
@@ -68,7 +69,7 @@ function App() {
       <header className="app-header">
         <h1 className="app-title">Daftar Tugas Kuliah</h1>
         <p className="app-description">
-          Aplikasi pencatatan tugas akademik mahasiswa secara rapi dan mandiri.
+          Catat tugas kuliah dan pantau statusnya.
         </p>
       </header>
 
@@ -80,6 +81,7 @@ function App() {
           error={error}
           onMuatUlang={bacaPenyimpanan}
         />
+        <Penjelasan />
       </main>
 
       <Footer />

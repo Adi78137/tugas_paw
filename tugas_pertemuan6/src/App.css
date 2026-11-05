@@ -270,6 +270,73 @@
   margin: 0 0.25rem;
 }
 
+.penjelasan-section {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  padding: 1.25rem;
+}
+
+.penjelasan-intro {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+}
+
+.penjelasan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.penjelasan-item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  background-color: var(--color-bg);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+
+.penjelasan-summary {
+  min-height: 44px;
+  padding: 0.625rem 0.875rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.penjelasan-summary:hover {
+  background-color: var(--color-surface);
+}
+
+.penjelasan-content {
+  padding: 0.5rem 1rem 1rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.penjelasan-points {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--color-text);
+}
+
+.penjelasan-points code {
+  font-size: 0.85em;
+  padding: 0.15rem 0.35rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
 @media (min-width: 640px) {
   .app-container {
     padding: 2.5rem 1.5rem 4rem;
