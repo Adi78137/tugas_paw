@@ -63,12 +63,26 @@ function App() {
     simpanKeStorage<Tugas[]>(STORAGE_KEY, listBaru)
   }
 
+  const handleEditTugas = (tugasDiedit: Tugas) => {
+    const listBaru: Tugas[] = daftarTugas.map((item) =>
+      item.id === tugasDiedit.id ? tugasDiedit : item
+    )
+    setDaftarTugas(listBaru)
+    simpanKeStorage<Tugas[]>(STORAGE_KEY, listBaru)
+  }
+
+  const handleHapusTugas = (id: string) => {
+    const listBaru: Tugas[] = daftarTugas.filter((item) => item.id !== id)
+    setDaftarTugas(listBaru)
+    simpanKeStorage<Tugas[]>(STORAGE_KEY, listBaru)
+  }
+
   return (
     <div className="app-container">
       <header className="app-header">
         <h1 className="app-title">Daftar Tugas Kuliah</h1>
         <p className="app-description">
-          Aplikasi pencatatan tugas akademik mahasiswa secara rapi dan mandiri.
+          Kelola tugas kuliah: edit dan hapus.
         </p>
       </header>
 
@@ -79,6 +93,8 @@ function App() {
           isLoading={isLoading}
           error={error}
           onMuatUlang={bacaPenyimpanan}
+          onEditTugas={handleEditTugas}
+          onHapusTugas={handleHapusTugas}
         />
       </main>
 

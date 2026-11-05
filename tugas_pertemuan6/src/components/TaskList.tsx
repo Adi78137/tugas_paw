@@ -1,10 +1,14 @@
-import type { Tugas, Status } from '../types'
+import { useState, useEffect } from 'react'
+import type { Tugas } from '../types'
+import { TaskItem } from './TaskItem'
 
 interface TaskListProps {
   daftarTugas: Tugas[]
   isLoading: boolean
   error: string | null
   onMuatUlang: () => void
+  onEditTugas: (tugas: Tugas) => void
+  onHapusTugas: (id: string) => void
 }
 
 export function TaskList({
@@ -12,7 +16,31 @@ export function TaskList({
   isLoading,
   error,
   onMuatUlang,
+  onEditTugas,
+  onHapusTugas,
 }: TaskListProps) {
+  const [tugasAkanDihapus, setTugasAkanDihapus] = useState<Tugas | null>(null)
+
+  useEffect(() => {
+    if (!tugasAkanDihapus) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setTugasAkanDihapus(null)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [tugasAkanDihapus])
+
+  const konfirmasiHapus = () => {
+    if (tugasAkanDihapus) {
+      onHapusTugas(tugasAkanDihapus.id)
+      setTugasAkanDihapus(null)
+    }
+  }
+
   if (isLoading) {
     return (
       <section className="list-section" aria-labelledby="list-heading">
@@ -69,30 +97,56 @@ export function TaskList({
         Daftar Tugas ({daftarTugas.length})
       </h2>
       <ul className="task-list">
-        {daftarTugas.map((tugas) => {
-          // Menggunakan union type Status untuk representasi label status pengerjaan.
-          const statusTugas: Status = tugas.selesai ? 'Selesai' : 'Belum Selesai'
-
-          return (
-            <li key={tugas.id} className="task-item">
-              <div className="task-header">
-                <h3 className="task-title">{tugas.judul}</h3>
-                <span className="task-status">{statusTugas}</span>
-              </div>
-              <div className="task-meta">
-                <p className="task-matkul">
-                  <span className="meta-label">Mata Kuliah:</span> {tugas.matkul}
-                </p>
-                <p className="task-deadline">
-                  <span className="meta-label">Batas Waktu:</span>{' '}
-                  <time dateTime={tugas.deadline}>{tugas.deadline}</time>
-                </p>
-              </div>
-            </li>
-          )
-        })}
+        {daftarTugas.map((tugas) => (
+          <TaskItem
+            key={tugas.id}
+            tugas={tugas}
+            onEdit={onEditTugas}
+            onRequestHapus={(t) => setTugasAkanDihapus(t)}
+          />
+        ))}
       </ul>
+
+      {tugasAkanDihapus && (
+        <div
+          className="modal-backdrop"
+          role="presentation"
+          onClick={() => setTugasAkanDihapus(null)}
+        >
+          <div
+            className="modal-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+            aria-describedby="modal-desc"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 id="modal-title" className="modal-title">
+              Konfirmasi Hapus Tugas
+            </h3>
+            <p id="modal-desc" className="modal-desc">
+              Apakah Anda yakin ingin menghapus tugas "{tugasAkanDihapus.judul}"? Data yang dihapus tidak dapat dipulihkan.
+            </p>
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => setTugasAkanDihapus(null)}
+                autoFocus
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                className="btn-danger"
+                onClick={konfirmasiHapus}
+              >
+                Hapus Tugas
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
-
