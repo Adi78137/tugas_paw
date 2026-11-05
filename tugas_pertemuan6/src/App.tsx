@@ -3,6 +3,7 @@ import type { Tugas } from './types'
 import { muatDariStorage, simpanKeStorage } from './utils/storage'
 import { TaskForm } from './components/TaskForm'
 import { TaskList } from './components/TaskList'
+import { Penjelasan } from './components/Penjelasan'
 import { Footer } from './components/Footer'
 import './App.css'
 
@@ -77,12 +78,12 @@ function App() {
     simpanKeStorage<Tugas[]>(STORAGE_KEY, listBaru)
   }
 
-  return (
+    return (
     <div className="app-container">
       <header className="app-header">
         <h1 className="app-title">Daftar Tugas Kuliah</h1>
         <p className="app-description">
-          Kelola tugas kuliah: edit dan hapus.
+          Catat, edit, hapus, dan pantau status tugas kuliah.
         </p>
       </header>
 
@@ -96,6 +97,7 @@ function App() {
           onEditTugas={handleEditTugas}
           onHapusTugas={handleHapusTugas}
         />
+        <Penjelasan />
       </main>
 
       <Footer />
