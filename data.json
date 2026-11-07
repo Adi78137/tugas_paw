@@ -10,5 +10,16 @@
     "title": "Membuat web profil",
     "status": "Terbuka",
     "folder": "profil"
+  },
+  { "pertemuan": 6, 
+    "title": "Daftar Tugas Kuliah (React)", 
+    "status": "Terbuka", 
+    "folder": "pertemuan6" 
+  },
+
+  { "pertemuan": 7, 
+    "title": "Katalog Kopi Nusantara (React)", 
+    "status": "Terbuka", 
+    "folder": "pertemuan7" 
   }
 ]
