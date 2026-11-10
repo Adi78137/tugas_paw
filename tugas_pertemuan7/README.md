@@ -1,75 +1,62 @@
-# React + TypeScript + Vite
+# Katalog Kopi Nusantara
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Nama:** Adi Karunia  
+**NIM:** 1247050127  
+**Mata Kuliah:** Pengembangan Aplikasi Web — Pertemuan 7
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Teknologi
 
-## React Compiler
+- React 19 + TypeScript
+- Vite 6
+- Bootstrap 5 (CDN via main.tsx)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Fitur
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Katalog produk kopi dan alat seduh dengan kartu visual per tingkat sangrai
+- Tambah dan hapus produk via formulir bervalidasi
+- Cari produk berdasarkan nama atau asal daerah
+- Filter berdasarkan kategori (Biji, Bubuk, Alat Seduh)
+- Keranjang belanja: tambah, kurangi, hapus item dengan sinkronisasi stok
+- Checkout dengan konfirmasi sukses inline (tidak mengembalikan stok)
+- Tandai produk sebagai favorit
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Struktur `src/`
 
 ```
-
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+src/
+├── assets/          # (kosong setelah cleanup)
+├── components/
+│   ├── Button.tsx
+│   ├── CartItem.tsx
+│   ├── CartPanel.tsx
+│   ├── FilterBar.tsx
+│   ├── Header.tsx
+│   ├── ProductCard.tsx
+│   ├── ProductForm.tsx
+│   ├── ProductGrid.tsx
+│   └── SearchBar.tsx
+├── utils/
+│   └── format.ts    # formatRupiah(angka)
+├── App.tsx
+├── index.css
+├── main.tsx
+└── types.ts
 ```
+
+---
+
+## Cara Menjalankan
+
+```bash
+npm install
+npm run dev      # development server
+npm run build    # production build → ../pertemuan7/
+```
+
+> Hasil build ditempatkan di folder `../pertemuan7/` sesuai konfigurasi `vite.config.ts`.

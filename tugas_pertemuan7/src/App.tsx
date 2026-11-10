@@ -7,7 +7,6 @@ import FilterBar from './components/FilterBar'
 import ProductGrid from './components/ProductGrid'
 import CartPanel from './components/CartPanel'
 
-// Data awal produk kopi nusantara dan peralatan seduh
 const INITIAL_PRODUCTS: CoffeeProduct[] = [
   {
     id: '1',
@@ -119,99 +118,79 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState<FilterCategory>('Semua')
   const [isCartOpen, setIsCartOpen] = useState(false)
 
-  // Hitung jumlah item total dalam keranjang untuk badge di header
   const totalCartCount = cart.reduce((acc, item) => acc + item.quantity, 0)
 
-  // Tambah produk ke keranjang belanja dan kurangi stok produk
   const handleAddToCart = (productToCart: CoffeeProduct) => {
     if (productToCart.stok <= 0) return
 
-    // Kurangi stok di katalog produk
     setProducts((prev) =>
       prev.map((p) => (p.id === productToCart.id ? { ...p, stok: p.stok - 1 } : p)),
     )
 
-    // Perbarui keranjang belanja
     setCart((prev) => {
-      const existing = prev.find((item) => item.product.id === productToCart.id)
+      const existing = prev.find((item) => item.productId === productToCart.id)
       if (existing) {
         return prev.map((item) =>
-          item.product.id === productToCart.id
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-                product: { ...item.product, stok: item.product.stok - 1 },
-              }
+          item.productId === productToCart.id
+            ? { ...item, quantity: item.quantity + 1 }
             : item,
         )
       }
-      return [...prev, { product: { ...productToCart, stok: productToCart.stok - 1 }, quantity: 1 }]
+      return [...prev, { productId: productToCart.id, quantity: 1 }]
     })
 
-    // Buka panel keranjang otomatis agar pengguna melihat item masuk
     setIsCartOpen(true)
   }
 
-  // Ubah kuantitas item dalam keranjang (delta: +1 atau -1)
   const handleUpdateCartQuantity = (productId: string, delta: number) => {
-    const cartItem = cart.find((item) => item.product.id === productId)
+    const cartItem = cart.find((item) => item.productId === productId)
     const product = products.find((p) => p.id === productId)
     if (!cartItem) return
 
     if (delta > 0) {
-      // Periksa apakah stok produk masih ada
       if (!product || product.stok <= 0) return
-
-      // Kurangi stok produk, tambah jumlah di keranjang
       setProducts((prev) =>
         prev.map((p) => (p.id === productId ? { ...p, stok: p.stok - 1 } : p)),
       )
       setCart((prev) =>
         prev.map((item) =>
-          item.product.id === productId ? { ...item, quantity: item.quantity + 1 } : item,
+          item.productId === productId ? { ...item, quantity: item.quantity + 1 } : item,
         ),
       )
     } else if (delta < 0) {
-      // Kembalikan 1 stok ke katalog produk
       setProducts((prev) =>
         prev.map((p) => (p.id === productId ? { ...p, stok: p.stok + 1 } : p)),
       )
-
       if (cartItem.quantity <= 1) {
-        // Hapus dari keranjang jika jumlah menjadi 0
-        setCart((prev) => prev.filter((item) => item.product.id !== productId))
+        setCart((prev) => prev.filter((item) => item.productId !== productId))
       } else {
         setCart((prev) =>
           prev.map((item) =>
-            item.product.id === productId ? { ...item, quantity: item.quantity - 1 } : item,
+            item.productId === productId ? { ...item, quantity: item.quantity - 1 } : item,
           ),
         )
       }
     }
   }
 
-  // Hapus item dari keranjang dan kembalikan seluruh kuantitas ke stok produk
   const handleRemoveFromCart = (productId: string) => {
-    const cartItem = cart.find((item) => item.product.id === productId)
+    const cartItem = cart.find((item) => item.productId === productId)
     if (cartItem) {
       setProducts((prev) =>
         prev.map((p) => (p.id === productId ? { ...p, stok: p.stok + cartItem.quantity } : p)),
       )
-      setCart((prev) => prev.filter((item) => item.product.id !== productId))
+      setCart((prev) => prev.filter((item) => item.productId !== productId))
     }
   }
 
-  // Kosongkan seluruh isi keranjang dan pulihkan stok semua produk
+  // Kosongkan keranjang dan pulihkan stok; dipanggil saat pengguna klik "Kosongkan"
   const handleClearCart = () => {
     setProducts((prev) => {
       const restored = [...prev]
       cart.forEach((cartItem) => {
-        const idx = restored.findIndex((p) => p.id === cartItem.product.id)
+        const idx = restored.findIndex((p) => p.id === cartItem.productId)
         if (idx !== -1) {
-          restored[idx] = {
-            ...restored[idx],
-            stok: restored[idx].stok + cartItem.quantity,
-          }
+          restored[idx] = { ...restored[idx], stok: restored[idx].stok + cartItem.quantity }
         }
       })
       return restored
@@ -219,45 +198,40 @@ function App() {
     setCart([])
   }
 
-  // Toggle status favorit suatu produk
   const handleToggleFavorite = (productId: string) => {
     setFavorites((prev) =>
       prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId],
     )
   }
 
-  // Tambah produk baru dari formulir
   const handleAddProduct = (newProduct: Omit<CoffeeProduct, 'id'>) => {
-    const productWithId: CoffeeProduct = {
-      ...newProduct,
-      id: Date.now().toString(),
-    }
+    const productWithId: CoffeeProduct = { ...newProduct, id: Date.now().toString() }
     setProducts((prev) => [productWithId, ...prev])
   }
 
-  // Hapus produk dari katalog, keranjang, dan daftar favorit
   const handleDeleteProduct = (productId: string) => {
     setProducts((prev) => prev.filter((p) => p.id !== productId))
-    setCart((prev) => prev.filter((item) => item.product.id !== productId))
+    setCart((prev) => prev.filter((item) => item.productId !== productId))
     setFavorites((prev) => prev.filter((id) => id !== productId))
   }
 
-  // Logika pencarian dan filter kategori gabungan
+  // Checkout tidak mengembalikan stok; dipanggil setelah CartPanel menampilkan konfirmasi sukses
+  const handleCheckout = () => {
+    setCart([])
+  }
+
   const normalizedQuery = searchQuery.trim().toLowerCase()
 
   const filteredProducts = products.filter((p) => {
     const matchesCategory =
       selectedCategory === 'Semua' ? true : p.kategori === selectedCategory
-
     const matchesSearch =
       normalizedQuery === '' ||
       p.nama.toLowerCase().includes(normalizedQuery) ||
       p.asal.toLowerCase().includes(normalizedQuery)
-
     return matchesCategory && matchesSearch
   })
 
-  // Hitung jumlah produk per kategori untuk filter bar
   const categoryCounts: Record<FilterCategory, number> = {
     Semua: products.length,
     Biji: products.filter((p) => p.kategori === 'Biji').length,
@@ -267,27 +241,25 @@ function App() {
 
   return (
     <div className="min-vh-100 pb-5" style={{ backgroundColor: 'var(--coffee-bg)' }}>
-      {/* Header Sticky dengan badge keranjang dan data mahasiswa */}
       <Header
         cartItemCount={totalCartCount}
         onToggleCart={() => setIsCartOpen((prev) => !prev)}
       />
 
       <main className="container" style={{ maxWidth: '1100px' }}>
-        {/* Panel Keranjang Belanja */}
         <CartPanel
           cart={cart}
+          products={products}
           isOpen={isCartOpen}
           onClose={() => setIsCartOpen(false)}
           onUpdateQuantity={handleUpdateCartQuantity}
           onRemove={handleRemoveFromCart}
           onClearCart={handleClearCart}
+          onCheckout={handleCheckout}
         />
 
-        {/* Formulir Tambah Produk Baru */}
         <ProductForm onAddProduct={handleAddProduct} />
 
-        {/* Area Kendali: Pencarian & Filter Kategori */}
         <section id="katalog" className="card coffee-card p-3 p-md-4 mb-4" aria-labelledby="katalog-heading">
           <div className="d-flex flex-column gap-3">
             <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-1">
@@ -313,7 +285,6 @@ function App() {
           </div>
         </section>
 
-        {/* Grid Produk Kopi */}
         <ProductGrid
           products={filteredProducts}
           favorites={favorites}

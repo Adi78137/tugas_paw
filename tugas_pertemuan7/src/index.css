@@ -1,4 +1,3 @@
-/* Tema Terang-Hangat: Katalog Kopi Nusantara (Krem, Espresso & Karamel) */
 :root {
   --coffee-bg: #f8f4ee;
   --coffee-surface: #ffffff;
@@ -29,15 +28,12 @@ body {
   background-color: var(--coffee-bg);
 }
 
-/* Navbar warm blur */
+/* Header solid untuk mencegah konten terlihat tembus saat scroll */
 .coffee-navbar {
-  background-color: rgba(248, 244, 238, 0.94);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: var(--coffee-bg);
   border-bottom: 1px solid var(--coffee-border);
 }
 
-/* Card & Surface Hierarchy */
 .coffee-card {
   background-color: var(--coffee-surface);
   border: 1px solid var(--coffee-border) !important;
@@ -51,7 +47,6 @@ body {
   box-shadow: 0 6px 16px -4px rgba(38, 22, 14, 0.12), 0 2px 6px rgba(38, 22, 14, 0.06);
 }
 
-/* Visual Header Pengganti Foto Murni CSS per tingkat sangrai dan kategori */
 .coffee-visual-thumb {
   height: 135px;
   width: 100%;
@@ -65,25 +60,21 @@ body {
   user-select: none;
 }
 
-/* 1. Sangrai Light / Karamel: cokelat muda hangat */
 .coffee-visual-thumb.roast-light {
   background: radial-gradient(circle at 35% 35%, #b47852 0%, #7e4b2d 85%);
   color: #fffdf9;
 }
 
-/* 2. Sangrai Medium: cokelat sedang kaya rasa */
 .coffee-visual-thumb.roast-medium {
   background: radial-gradient(circle at 35% 35%, #6e432b 0%, #402315 85%);
   color: #fbf5ee;
 }
 
-/* 3. Sangrai Dark: espresso gelap pekat */
 .coffee-visual-thumb.roast-dark {
   background: radial-gradient(circle at 35% 35%, #381f13 0%, #1a0c06 85%);
   color: #f6ebe1;
 }
 
-/* 4. Kategori Bubuk Kopi */
 .coffee-visual-thumb.kategori-bubuk {
   background: radial-gradient(circle at 65% 35%, #593928 0%, #2e1a10 85%);
   color: #faede6;
@@ -99,13 +90,11 @@ body {
   color: #f5eae0;
 }
 
-/* 5. Kategori Alat Seduh: aksen warm bronze / stainless */
 .coffee-visual-thumb.kategori-alat {
   background: radial-gradient(circle at 50% 40%, #7d6556 0%, #443227 85%);
   color: #fffdfa;
 }
 
-/* Pola tekstur halus berbasis CSS */
 .coffee-pattern-overlay {
   position: absolute;
   inset: 0;
@@ -114,7 +103,6 @@ body {
   background-size: 12px 12px;
 }
 
-/* Tombol dan aksen hangat */
 .btn-coffee-primary {
   background-color: var(--coffee-accent) !important;
   border-color: var(--coffee-accent) !important;
@@ -143,7 +131,7 @@ body {
   color: var(--coffee-espresso) !important;
 }
 
-/* Badge kategori: latar krem terang dengan teks cokelat tua espresso (WCAG AAA contrast > 11:1) */
+/* Kontras WCAG AAA >11:1 pada latar terang */
 .badge-coffee-category {
   background-color: #f7f1e6 !important;
   color: #26160e !important;
@@ -152,7 +140,6 @@ body {
   font-size: 0.75rem;
 }
 
-/* Badge asal */
 .badge-coffee-origin {
   background-color: var(--coffee-accent-light);
   color: var(--coffee-accent);
@@ -161,7 +148,6 @@ body {
   font-size: 0.75rem;
 }
 
-/* Input form hangat */
 .coffee-input {
   background-color: #ffffff !important;
   border-color: var(--coffee-border) !important;
@@ -187,7 +173,6 @@ body {
   color: var(--coffee-text-muted) !important;
 }
 
-/* Pembatas vertikal identitas di header */
 .coffee-student-info {
   border-left: none;
 }
@@ -198,15 +183,13 @@ body {
   }
 }
 
-/* Accessible tap targets */
-.tm-tap-target {
+.coffee-tap-target {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -215,5 +198,11 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+@media (min-width: 576px) {
+  .w-sm-auto {
+    width: auto !important;
   }
 }

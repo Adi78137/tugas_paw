@@ -1,8 +1,6 @@
-// Tipe kategori kopi dan opsi filter
 export type CoffeeCategory = 'Biji' | 'Bubuk' | 'Alat Seduh'
 export type FilterCategory = 'Semua' | CoffeeCategory
 
-// Struktur data satu produk kopi atau alat seduh
 export interface CoffeeProduct {
   id: string
   nama: string
@@ -15,8 +13,8 @@ export interface CoffeeProduct {
   stok: number
 }
 
-// Struktur data item di dalam keranjang belanja
+// Hanya menyimpan referensi produk dan jumlah; data produk diambil dari state App via productId
 export interface CartItemData {
-  product: CoffeeProduct
+  productId: string
   quantity: number
 }

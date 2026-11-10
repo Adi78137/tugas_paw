@@ -21,7 +21,6 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   onDelete,
   hasActiveSearchOrFilter,
 }) => {
-  // Conditional rendering untuk tampilan kosong
   if (products.length === 0) {
     return (
       <div className="card coffee-card text-center p-5 my-4">
@@ -38,7 +37,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   }
 
   return (
-    <div className="row g-3 g-md-4">
+    <div className="row g-3 g-md-4 align-items-start">
       {products.map((product) => (
         <div key={product.id} className="col-12 col-sm-6 col-lg-4">
           <ProductCard

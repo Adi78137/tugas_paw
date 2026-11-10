@@ -54,7 +54,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onAddProduct }) => {
       catatanRasa: catatanRasa.trim() || 'Khas Nusantara',
     })
 
-    // Reset form
     setNama('')
     setAsal('')
     setKategori('Biji')
@@ -83,7 +82,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onAddProduct }) => {
           variant="outline"
           size="sm"
           onClick={() => setIsOpen((prev) => !prev)}
-          className="text-nowrap tm-tap-target px-3"
+          className="text-nowrap coffee-tap-target px-3"
           ariaLabel={isOpen ? 'Tutup form tambah produk' : 'Buka form tambah produk'}
         >
           {isOpen ? '✕ Tutup Form' : '+ Buka Form'}
@@ -236,7 +235,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onAddProduct }) => {
                 variant="outline"
                 size="md"
                 onClick={() => setIsOpen(false)}
-                className="px-3 tm-tap-target"
+                className="px-3 coffee-tap-target"
               >
                 Batal
               </Button>
@@ -244,7 +243,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onAddProduct }) => {
                 type="submit"
                 variant="primary"
                 size="md"
-                className="px-4 fw-semibold tm-tap-target"
+                className="px-4 fw-semibold coffee-tap-target"
               >
                 Simpan Produk
               </Button>

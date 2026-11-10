@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import type { CoffeeProduct } from '../types'
+import { formatRupiah } from '../utils/format'
 import Button from './Button'
 
 // Props menerima data satu produk kopi, status favorit, dan handler aksi (keranjang, favorit, hapus)
@@ -11,7 +12,7 @@ export interface ProductCardProps {
   isFavorite: boolean
 }
 
-// Komponen kartu produk kopi; mengelola state lokal showDetail untuk buka/tutup deskripsi
+// Mengelola state lokal showDetail untuk buka/tutup deskripsi
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onAddToCart,
@@ -21,24 +22,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const [showDetail, setShowDetail] = useState(false)
 
-  const formattedPrice = new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    maximumFractionDigits: 0,
-  }).format(product.harga)
-
-  // Penentuan kelas gradien warna blok visual berdasarkan tingkat sangrai dan kategori
+  // Gradien blok visual ditentukan dari tingkat sangrai dan kategori produk
   const getThumbClass = () => {
-    if (product.kategori === 'Alat Seduh') {
-      return 'kategori-alat'
-    }
+    if (product.kategori === 'Alat Seduh') return 'kategori-alat'
     const sangrai = product.tingkatSangrai.toLowerCase()
     if (product.kategori === 'Bubuk') {
       if (sangrai.includes('dark')) return 'bubuk-dark'
       if (sangrai.includes('light')) return 'bubuk-light'
       return 'kategori-bubuk'
     }
-    // Biji Kopi
     if (sangrai.includes('light')) return 'roast-light'
     if (sangrai.includes('dark')) return 'roast-dark'
     return 'roast-medium'
@@ -48,16 +40,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const isOutOfStock = product.stok <= 0
 
   return (
-    <article className="card coffee-card h-100 d-flex flex-column" aria-labelledby={`product-${product.id}`}>
-      {/* Visual Header Pengganti Foto (Murni CSS dengan variasi warna sangrai dan kategori) */}
+    <article className="card coffee-card d-flex flex-column" aria-labelledby={`product-${product.id}`}>
       <div className={`coffee-visual-thumb ${thumbClass}`}>
         <div className="coffee-pattern-overlay" aria-hidden="true"></div>
         <div className="text-center p-2 position-relative z-1">
-          <span className="badge badge-coffee-category px-2 py-1 small text-uppercase">
-            {product.kategori}
-          </span>
           <div
-            className="small mt-1 font-monospace fw-semibold"
+            className="small font-monospace fw-semibold"
             style={{ color: '#fffdfa', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}
           >
             {product.tingkatSangrai !== '-' ? `Sangrai: ${product.tingkatSangrai}` : 'Peralatan'}
@@ -66,7 +54,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       </div>
 
       <div className="card-body p-3 p-md-4 d-flex flex-column flex-grow-1">
-        {/* Asal, Kategori, dan Tombol Favorit yang adaptif di layar 375px */}
         <div className="d-flex justify-content-between align-items-center gap-2 mb-2 flex-wrap">
           <div className="d-flex flex-wrap gap-1 align-items-center">
             <span className="badge badge-coffee-origin">{product.asal}</span>
@@ -88,19 +75,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <h3
           id={`product-${product.id}`}
           className="h6 fw-bold mb-1"
-          style={{
-            color: 'var(--coffee-espresso)',
-            wordBreak: 'break-word',
-            overflowWrap: 'break-word',
-            lineHeight: 1.35,
-          }}
+          style={{ color: 'var(--coffee-espresso)', wordBreak: 'break-word', overflowWrap: 'break-word', lineHeight: 1.35 }}
         >
           {product.nama}
         </h3>
 
         <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-1">
           <div className="fw-bold fs-6" style={{ color: 'var(--coffee-accent)' }}>
-            {formattedPrice}
+            {formatRupiah(product.harga)}
           </div>
           <div className="small">
             {isOutOfStock ? (
@@ -111,15 +93,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         </div>
 
-        {/* Conditional Rendering Detail Deskripsi dan Catatan Rasa */}
         {showDetail && (
           <div
             className="p-3 mb-3 rounded-2"
-            style={{
-              backgroundColor: 'var(--coffee-surface-subtle)',
-              wordBreak: 'break-word',
-              overflowWrap: 'break-word',
-            }}
+            style={{ backgroundColor: 'var(--coffee-surface-subtle)', wordBreak: 'break-word', overflowWrap: 'break-word' }}
           >
             <p className="coffee-text-secondary small mb-2">{product.deskripsi}</p>
             {product.catatanRasa && (
@@ -136,7 +113,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               variant="outline"
               size="sm"
               onClick={() => setShowDetail((prev) => !prev)}
-              className="w-50 text-nowrap tm-tap-target px-1"
+              className="w-50 text-nowrap coffee-tap-target px-1"
               ariaLabel={showDetail ? `Tutup detail ${product.nama}` : `Lihat detail ${product.nama}`}
             >
               {showDetail ? 'Tutup detail' : 'Lihat detail'}
@@ -146,7 +123,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               variant="danger"
               size="sm"
               onClick={() => onDelete(product.id)}
-              className="w-50 text-nowrap tm-tap-target px-1"
+              className="w-50 text-nowrap coffee-tap-target px-1"
               ariaLabel={`Hapus produk ${product.nama}`}
             >
               Hapus
@@ -158,7 +135,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             size="md"
             onClick={() => onAddToCart(product)}
             disabled={isOutOfStock}
-            className="w-100 fw-semibold text-nowrap tm-tap-target px-2"
+            className="w-100 fw-semibold text-nowrap coffee-tap-target px-2"
             ariaLabel={`Tambah ${product.nama} ke keranjang`}
           >
             {isOutOfStock ? 'Stok Habis' : '+ Tambah ke Keranjang'}

@@ -40,7 +40,7 @@ export const Header: React.FC<HeaderProps> = ({ cartItemCount, onToggleCart }) =
                 variant="outline"
                 size="sm"
                 href="#katalog"
-                className="text-nowrap tm-tap-target px-3"
+                className="text-nowrap coffee-tap-target px-3"
                 ariaLabel="Navigasi ke daftar produk kopi"
               >
                 Katalog
@@ -49,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({ cartItemCount, onToggleCart }) =
                 variant="primary"
                 size="sm"
                 onClick={onToggleCart}
-                className="text-nowrap tm-tap-target px-3 d-flex align-items-center gap-2"
+                className="text-nowrap coffee-tap-target px-3 d-flex align-items-center gap-2"
                 ariaLabel={`Keranjang belanja, ${cartItemCount} item`}
               >
                 <span>Keranjang</span>

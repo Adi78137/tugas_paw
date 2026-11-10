@@ -45,7 +45,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 variant={isActive ? 'primary' : 'outline'}
                 size="sm"
                 onClick={() => onChange(option.value)}
-                className="w-100 px-3 fw-medium tm-tap-target text-nowrap"
+                className="w-100 px-3 fw-medium coffee-tap-target text-nowrap"
                 ariaLabel={`Filter kategori ${option.label}`}
               >
                 {option.label} ({count})
