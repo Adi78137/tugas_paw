@@ -3,7 +3,6 @@ import type { CartItemData, CoffeeProduct } from '../types'
 import { formatRupiah } from '../utils/format'
 import Button from './Button'
 
-// Props menerima satu item keranjang, data produk asli, dan handler ubah kuantitas / hapus
 export interface CartItemProps {
   item: CartItemData
   product: CoffeeProduct
@@ -11,7 +10,6 @@ export interface CartItemProps {
   onRemove: (id: string) => void
 }
 
-// Stateless; dikontrol melalui callback parent
 export const CartItem: React.FC<CartItemProps> = ({ item, product, onUpdateQuantity, onRemove }) => {
   const itemTotal = product.harga * item.quantity
 
@@ -33,8 +31,7 @@ export const CartItem: React.FC<CartItemProps> = ({ item, product, onUpdateQuant
             size="sm"
             onClick={() => onUpdateQuantity(item.productId, -1)}
             ariaLabel={`Kurangi jumlah ${product.nama}`}
-            className="px-2 py-0 fw-bold"
-            style={{ width: '32px', height: '32px' }}
+            className="cart-quantity-button px-2 py-0 fw-bold coffee-tap-target"
           >
             -
           </Button>
@@ -49,8 +46,7 @@ export const CartItem: React.FC<CartItemProps> = ({ item, product, onUpdateQuant
             onClick={() => onUpdateQuantity(item.productId, 1)}
             disabled={product.stok <= 0}
             ariaLabel={`Tambah jumlah ${product.nama}`}
-            className="px-2 py-0 fw-bold"
-            style={{ width: '32px', height: '32px' }}
+            className="cart-quantity-button px-2 py-0 fw-bold coffee-tap-target"
           >
             +
           </Button>
@@ -65,8 +61,7 @@ export const CartItem: React.FC<CartItemProps> = ({ item, product, onUpdateQuant
           size="sm"
           onClick={() => onRemove(item.productId)}
           ariaLabel={`Hapus ${product.nama} dari keranjang`}
-          className="px-2 py-1"
-          style={{ minHeight: '32px' }}
+          className="coffee-tap-target px-2 py-1"
         >
           Hapus
         </Button>

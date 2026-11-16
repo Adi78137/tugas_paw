@@ -1,36 +1,25 @@
 import React from 'react'
 import Button from './Button'
 
-// Props menerima total kuantitas item dalam keranjang dan callback untuk membuka panel keranjang
 export interface HeaderProps {
   cartItemCount: number
   onToggleCart: () => void
 }
 
-// Komponen header navigasi; menampilkan identitas brand, pintasan keranjang, dan data mahasiswa
 export const Header: React.FC<HeaderProps> = ({ cartItemCount, onToggleCart }) => {
   return (
     <header className="sticky-top coffee-navbar mb-4 py-2 py-sm-3">
-      <div className="container" style={{ maxWidth: '1100px' }}>
+      <div className="container coffee-header-inner">
         <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
           <div>
             <div className="d-flex align-items-center gap-2">
-              <span
-                style={{
-                  width: '10px',
-                  height: '10px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--coffee-accent)',
-                  display: 'inline-block',
-                }}
-                aria-hidden="true"
-              ></span>
-              <h1 className="h5 fw-bold mb-0 text-nowrap" style={{ color: 'var(--coffee-espresso)' }}>
+              <span className="coffee-mark" aria-hidden="true">K</span>
+              <h1 className="coffee-wordmark mb-0">
                 Katalog Kopi Nusantara
               </h1>
             </div>
             <p className="coffee-text-secondary small mb-0 mt-1">
-              Kurasi biji kopi pilihan, bubuk segar, dan perlengkapan seduh nusantara.
+              Nikmat kopi pilihan memang selalu punya cara tersendiri untuk menghidupkan suasana dan mengawali hari.
             </p>
           </div>
 
@@ -53,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({ cartItemCount, onToggleCart }) =
                 ariaLabel={`Keranjang belanja, ${cartItemCount} item`}
               >
                 <span>Keranjang</span>
-                <span className="badge bg-white text-dark rounded-pill px-2 py-1 small fw-bold">
+                <span key={cartItemCount} className="badge bg-white text-dark rounded-pill px-2 py-1 small fw-bold cart-count">
                   {cartItemCount}
                 </span>
               </Button>

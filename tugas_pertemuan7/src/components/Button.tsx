@@ -1,6 +1,5 @@
 import React from 'react'
 
-// Props untuk varian tombol, ukuran, aksi klik, disable state, dan aksesibilitas
 export interface ButtonProps {
   variant?: 'primary' | 'outline' | 'danger' | 'success'
   size?: 'sm' | 'md' | 'lg'
@@ -14,7 +13,6 @@ export interface ButtonProps {
   style?: React.CSSProperties
 }
 
-// Komponen tombol reusable; membungkus elemen button atau tautan anchor
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'sm',

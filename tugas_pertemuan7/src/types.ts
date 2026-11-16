@@ -13,7 +13,7 @@ export interface CoffeeProduct {
   stok: number
 }
 
-// Hanya menyimpan referensi produk dan jumlah; data produk diambil dari state App via productId
+// Item keranjang menyimpan referensi produk; detailnya tetap berada di state App.
 export interface CartItemData {
   productId: string
   quantity: number

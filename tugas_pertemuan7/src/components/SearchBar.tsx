@@ -1,13 +1,11 @@
 import React from 'react'
 
-// Props menerima teks pencarian aktif dan fungsi handler saat input berubah
 export interface SearchBarProps {
   value: string
   onChange: (query: string) => void
   placeholder?: string
 }
 
-// Komponen input pencarian untuk menyaring kopi berdasarkan nama atau daerah asal
 export const SearchBar: React.FC<SearchBarProps> = ({
   value,
   onChange,

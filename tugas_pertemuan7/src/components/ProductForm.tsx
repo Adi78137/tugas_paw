@@ -2,12 +2,10 @@ import React, { useState } from 'react'
 import type { CoffeeCategory, CoffeeProduct } from '../types'
 import Button from './Button'
 
-// Props menerima fungsi onAddProduct untuk mendaftarkan produk kopi baru ke state utama
 export interface ProductFormProps {
   onAddProduct: (product: Omit<CoffeeProduct, 'id'>) => void
 }
 
-// Komponen form tambah produk; mengelola state lokal nilai field dan pesan kesalahan validasi
 export const ProductForm: React.FC<ProductFormProps> = ({ onAddProduct }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [nama, setNama] = useState('')
@@ -74,7 +72,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onAddProduct }) => {
             Tambah Produk Baru
           </h2>
           <p className="coffee-text-secondary small mb-0 mt-1">
-            Daftarkan biji kopi, bubuk, atau perlengkapan seduh ke dalam katalog.
+            Tambahkan pilihan baru dari kebun atau meja seduhmu.
           </p>
         </div>
 

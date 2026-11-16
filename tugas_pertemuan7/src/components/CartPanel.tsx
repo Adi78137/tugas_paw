@@ -4,7 +4,6 @@ import { formatRupiah } from '../utils/format'
 import Button from './Button'
 import CartItem from './CartItem'
 
-// Props menerima keranjang, daftar produk (untuk lookup), status visibilitas, dan handler aksi
 export interface CartPanelProps {
   cart: CartItemData[]
   products: CoffeeProduct[]
@@ -16,7 +15,6 @@ export interface CartPanelProps {
   onCheckout: () => void
 }
 
-// Panel keranjang belanja; mengelola state lokal pesan sukses checkout
 export const CartPanel: React.FC<CartPanelProps> = ({
   cart,
   products,
@@ -48,7 +46,7 @@ export const CartPanel: React.FC<CartPanelProps> = ({
   return (
     <aside
       id="keranjang"
-      className="card coffee-card mb-4 border-2"
+      className="card coffee-card cart-panel"
       style={{ borderColor: 'var(--coffee-accent)' }}
       aria-labelledby="keranjang-heading"
     >

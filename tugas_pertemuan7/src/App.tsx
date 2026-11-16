@@ -6,6 +6,8 @@ import SearchBar from './components/SearchBar'
 import FilterBar from './components/FilterBar'
 import ProductGrid from './components/ProductGrid'
 import CartPanel from './components/CartPanel'
+import CartDrawer from './components/CartDrawer'
+import CartToast from './components/CartToast'
 
 const INITIAL_PRODUCTS: CoffeeProduct[] = [
   {
@@ -109,7 +111,6 @@ const INITIAL_PRODUCTS: CoffeeProduct[] = [
   },
 ]
 
-// Komponen utama aplikasi; mengelola state produk, keranjang, favorit, pencarian, dan filter
 function App() {
   const [products, setProducts] = useState<CoffeeProduct[]>(INITIAL_PRODUCTS)
   const [cart, setCart] = useState<CartItemData[]>([])
@@ -117,6 +118,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<FilterCategory>('Semua')
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
 
   const totalCartCount = cart.reduce((acc, item) => acc + item.quantity, 0)
 
@@ -139,7 +141,7 @@ function App() {
       return [...prev, { productId: productToCart.id, quantity: 1 }]
     })
 
-    setIsCartOpen(true)
+    setToastMessage(`${productToCart.nama} ditambahkan`)
   }
 
   const handleUpdateCartQuantity = (productId: string, delta: number) => {
@@ -183,7 +185,7 @@ function App() {
     }
   }
 
-  // Kosongkan keranjang dan pulihkan stok; dipanggil saat pengguna klik "Kosongkan"
+  // Mengembalikan stok sebelum keranjang dikosongkan.
   const handleClearCart = () => {
     setProducts((prev) => {
       const restored = [...prev]
@@ -215,7 +217,7 @@ function App() {
     setFavorites((prev) => prev.filter((id) => id !== productId))
   }
 
-  // Checkout tidak mengembalikan stok; dipanggil setelah CartPanel menampilkan konfirmasi sukses
+  // Checkout sengaja tidak mengembalikan stok.
   const handleCheckout = () => {
     setCart([])
   }
@@ -240,41 +242,46 @@ function App() {
   }
 
   return (
-    <div className="min-vh-100 pb-5" style={{ backgroundColor: 'var(--coffee-bg)' }}>
+    <div className="coffee-page min-vh-100 pb-5">
       <Header
         cartItemCount={totalCartCount}
         onToggleCart={() => setIsCartOpen((prev) => !prev)}
       />
 
-      <main className="container" style={{ maxWidth: '1100px' }}>
-        <CartPanel
-          cart={cart}
-          products={products}
-          isOpen={isCartOpen}
-          onClose={() => setIsCartOpen(false)}
-          onUpdateQuantity={handleUpdateCartQuantity}
-          onRemove={handleRemoveFromCart}
-          onClearCart={handleClearCart}
-          onCheckout={handleCheckout}
-        />
+      <main className="container coffee-main">
+        <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)}>
+          <CartPanel
+            cart={cart}
+            products={products}
+            isOpen={isCartOpen}
+            onClose={() => setIsCartOpen(false)}
+            onUpdateQuantity={handleUpdateCartQuantity}
+            onRemove={handleRemoveFromCart}
+            onClearCart={handleClearCart}
+            onCheckout={handleCheckout}
+          />
+        </CartDrawer>
 
         <ProductForm onAddProduct={handleAddProduct} />
 
-        <section id="katalog" className="card coffee-card p-3 p-md-4 mb-4" aria-labelledby="katalog-heading">
+        <section id="katalog" className="catalog-tools mb-4" aria-labelledby="katalog-heading">
           <div className="d-flex flex-column gap-3">
-            <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-1">
-              <h2 id="katalog-heading" className="h5 fw-bold mb-0 text-nowrap" style={{ color: 'var(--coffee-espresso)' }}>
-                Katalog Produk Kopi
-              </h2>
-              <span className="coffee-text-secondary small">
-                Menampilkan {filteredProducts.length} dari {products.length} produk
+            <div className="catalog-heading-row d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-end gap-2">
+              <div>
+                <p className="catalog-kicker mb-2">Dari kebun Nusantara</p>
+                <h2 id="katalog-heading" className="catalog-title mb-0">
+                  Pilih seduhanmu
+                </h2>
+              </div>
+              <span className="coffee-text-secondary small catalog-count">
+                {filteredProducts.length} dari {products.length} pilihan
               </span>
             </div>
 
             <SearchBar
               value={searchQuery}
               onChange={setSearchQuery}
-              placeholder="Cari nama atau asal kopi..."
+              placeholder="Cari kopi dari nama atau daerah asal"
             />
 
             <FilterBar
@@ -294,6 +301,15 @@ function App() {
           hasActiveSearchOrFilter={normalizedQuery !== '' || selectedCategory !== 'Semua'}
         />
       </main>
+
+      <CartToast
+        message={toastMessage}
+        onDismiss={() => setToastMessage(null)}
+        onViewCart={() => {
+          setToastMessage(null)
+          setIsCartOpen(true)
+        }}
+      />
     </div>
   )
 }
