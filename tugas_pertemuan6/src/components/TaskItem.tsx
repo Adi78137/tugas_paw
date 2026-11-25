@@ -54,6 +54,18 @@ export function TaskItem({ tugas, onEdit, onRequestHapus }: TaskItemProps) {
     setSedangEdit(false)
   }
 
+  // Menggunakan type alias dan union type Status untuk menentukan status aktif dan transisinya.
+  const statusTugas: Status = tugas.selesai ? 'Selesai' : 'Belum Selesai'
+
+  const handleToggleStatus = () => {
+    // Union type Status untuk menentukan nilai status berikutnya saat diubah.
+    const statusBerikutnya: Status = tugas.selesai ? 'Belum Selesai' : 'Selesai'
+    onEdit({
+      ...tugas,
+      selesai: statusBerikutnya === 'Selesai',
+    })
+  }
+
   if (sedangEdit) {
     return (
       <li className="task-item task-item-editing" onKeyDown={handleKeyDown}>
@@ -125,14 +137,22 @@ export function TaskItem({ tugas, onEdit, onRequestHapus }: TaskItemProps) {
     )
   }
 
-  // Menggunakan union type Status untuk representasi label status pengerjaan.
-  const statusTugas: Status = tugas.selesai ? 'Selesai' : 'Belum Selesai'
-
   return (
-    <li className="task-item">
+    <li className={`task-item ${tugas.selesai ? 'task-item-completed' : ''}`}>
       <div className="task-header">
-        <h3 className="task-title">{tugas.judul}</h3>
-        <span className="task-status">{statusTugas}</span>
+        <h3 className={`task-title ${tugas.selesai ? 'task-title-completed' : ''}`}>
+          {tugas.judul}
+        </h3>
+        <button
+          type="button"
+          onClick={handleToggleStatus}
+          className={`task-status-btn ${tugas.selesai ? 'status-selesai' : 'status-belum'}`}
+          aria-pressed={tugas.selesai}
+          aria-label={`Ubah status tugas ${tugas.judul}. Status saat ini: ${statusTugas}`}
+          title="Klik untuk mengubah status tugas"
+        >
+          {statusTugas}
+        </button>
       </div>
       <div className="task-meta">
         <p className="task-matkul">
@@ -144,6 +164,14 @@ export function TaskItem({ tugas, onEdit, onRequestHapus }: TaskItemProps) {
         </p>
       </div>
       <div className="item-actions">
+        <button
+          type="button"
+          className="btn-secondary"
+          onClick={handleToggleStatus}
+          aria-label={`Tandai tugas ${tugas.judul} sebagai ${tugas.selesai ? 'Belum Selesai' : 'Selesai'}`}
+        >
+          {tugas.selesai ? 'Tandai Belum Selesai' : 'Tandai Selesai'}
+        </button>
         <button
           type="button"
           className="btn-secondary"
@@ -164,4 +192,3 @@ export function TaskItem({ tugas, onEdit, onRequestHapus }: TaskItemProps) {
     </li>
   )
 }
-

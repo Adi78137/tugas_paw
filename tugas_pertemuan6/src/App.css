@@ -229,6 +229,45 @@
   word-break: break-word;
 }
 
+.task-title-completed {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+.task-item-completed {
+  opacity: 0.88;
+}
+
+.task-status-btn {
+  min-height: 40px;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: var(--radius-base);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.task-status-btn:hover {
+  filter: brightness(0.95);
+}
+
+.task-status-btn.status-selesai {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-text);
+  border: 1px solid var(--color-success-border);
+}
+
+.task-status-btn.status-belum {
+  background-color: var(--color-badge-bg);
+  color: var(--color-badge-text);
+  border: 1px solid var(--color-badge-border);
+}
+
 .task-status {
   display: inline-block;
   padding: 0.2rem 0.5rem;
