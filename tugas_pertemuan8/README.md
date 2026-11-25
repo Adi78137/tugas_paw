@@ -155,7 +155,7 @@ README ini belum menyisipkan tag gambar agar tidak menampilkan gambar rusak. Set
 
 **Fitur Interaktif**
 ![Fitur interaktif](docs/interaktif.png)
-```
+
 
 ## Menjalankan
 
