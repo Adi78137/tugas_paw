@@ -145,8 +145,15 @@ File PNG belum ada di repository ini. Siapkan tiga berkas berikut di folder `doc
 README ini belum menyisipkan tag gambar agar tidak menampilkan gambar rusak. Setelah PNG tersedia, tambahkan tiga baris ini di bawah daftar tersebut:
 
 ```markdown
+### Tampilan Aplikasi
+
+**Beranda**
 ![Beranda](docs/home.png)
+
+**Detail Produk**
 ![Detail produk](docs/detail.png)
+
+**Fitur Interaktif**
 ![Fitur interaktif](docs/interaktif.png)
 ```
 
