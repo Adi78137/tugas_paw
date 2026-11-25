@@ -134,17 +134,7 @@ tugas_pertemuan8/
 
 `App.tsx` merangkai rute dan provider. `Layout.tsx` menyimpan navbar dan footer. `pages/` berisi halaman, `components/` berisi bagian antarmuka yang dipakai ulang, `context/` berisi favorit global, `hooks/` berisi logika React yang dipakai ulang, `services/` berisi pemanggil API, dan `utils/` berisi fungsi bantu murni.
 
-## Screenshot
 
-File PNG belum ada di repository ini. Siapkan tiga berkas berikut di folder `docs/screenshots/` setelah website berjalan:
-
-- `home.png`, beranda dengan ringkasan katalog dan produk rating tertinggi.
-- `detail.png`, halaman detail dengan spesifikasi, ulasan, dan aksi produk.
-- `interaktif.png`, halaman katalog saat pencarian, filter, favorit, atau pagination dipakai.
-
-README ini belum menyisipkan tag gambar agar tidak menampilkan gambar rusak. Setelah PNG tersedia, tambahkan tiga baris ini di bawah daftar tersebut:
-
-```markdown
 ### Tampilan Aplikasi
 
 **Beranda**
