@@ -4,48 +4,64 @@ import { useFavorites } from '../hooks/useFavorites'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { LoadingSpinner } from '../components/LoadingSpinner'
 import { ErrorMessage } from '../components/ErrorMessage'
+import { EmptyState } from '../components/EmptyState'
 import { ProductCard } from '../components/ProductCard'
+import '../components/Catalog.css'
 
 export function HomePage() {
   useDocumentTitle('Beranda')
   const { data: gadgets, loading, error, refetch } = useGadgets()
-  const { isFavorite, toggleFavorite } = useFavorites()
+  const { favoriteIds, isFavorite, toggleFavorite } = useFavorites()
 
   const topGadgets = gadgets
     ? [...gadgets].sort((a, b) => b.rating - a.rating).slice(0, 4)
     : []
+  const categoryCount = gadgets
+    ? new Set(gadgets.map((gadget) => gadget.category)).size
+    : 0
 
   return (
-    <div>
-      <section className="bg-light py-5 border-bottom">
-        <div className="container py-4 text-center">
-          <h1 className="display-5 fw-bold mb-3">Temukan Gadget Impian Anda</h1>
-          <p className="lead text-muted mx-auto mb-4" style={{ maxWidth: '640px' }}>
-            Jelajahi koleksi smartphone, laptop, tablet, dan aksesoris gadget
-            terbaik dengan spesifikasi lengkap dan harga terjangkau.
+    <div className="container kg-home">
+      <section className="kg-home-hero">
+        <div>
+          <h1>Katalog gadget dengan harga rupiah.</h1>
+          <p>
+            Jelajahi koleksi smartphone, laptop, tablet, dan aksesoris pilihan
+            lengkap dengan estimasi harga rupiah, spesifikasi, dan ulasan
+            pembeli.
           </p>
-          <div className="d-flex justify-content-center gap-2">
-            <Link to="/katalog" className="btn btn-primary btn-lg px-4">
-              Jelajahi Katalog
+          <div className="kg-home-actions">
+            <Link to="/katalog" className="btn btn-primary">
+              Buka katalog
             </Link>
-            <Link to="/favorit" className="btn btn-outline-secondary btn-lg px-4">
-              Lihat Favorit
+            <Link to="/favorit" className="btn btn-outline-secondary">
+              Lihat favorit
             </Link>
           </div>
         </div>
+
+        {!error && (
+          <dl className="kg-home-stats" aria-label="Ringkasan katalog">
+            <div>
+              <dt>Produk</dt>
+              <dd>{loading ? '...' : (gadgets?.length ?? 0)}</dd>
+            </div>
+            <div>
+              <dt>Kategori</dt>
+              <dd>{loading ? '...' : categoryCount}</dd>
+            </div>
+            <div>
+              <dt>Favorit</dt>
+              <dd>{favoriteIds.length}</dd>
+            </div>
+          </dl>
+        )}
       </section>
 
-      <section className="container py-5">
-        <div className="d-flex align-items-center justify-content-between mb-4">
-          <div>
-            <h2 className="h4 fw-bold mb-1">Produk Unggulan</h2>
-            <p className="text-muted small mb-0">
-              Pilihan gadget dengan penilaian rating tertinggi dari pengguna.
-            </p>
-          </div>
-          <Link to="/katalog" className="btn btn-sm btn-outline-primary">
-            Lihat Semua &rarr;
-          </Link>
+      <section aria-labelledby="produk-unggulan">
+        <div className="kg-section-head">
+          <h2 id="produk-unggulan">Rating tertinggi</h2>
+          <Link to="/katalog">Lihat semua produk</Link>
         </div>
 
         {loading && <LoadingSpinner text="Memuat produk unggulan..." />}
@@ -57,16 +73,22 @@ export function HomePage() {
           />
         )}
 
-        {!loading && !error && (
-          <div className="row g-4">
+        {!loading && !error && topGadgets.length === 0 && (
+          <EmptyState
+            title="Belum ada produk"
+            description="API tidak mengembalikan produk. Muat ulang halaman untuk mencoba lagi."
+          />
+        )}
+
+        {!loading && !error && topGadgets.length > 0 && (
+          <div className="kg-product-grid">
             {topGadgets.map((gadget) => (
-              <div key={gadget.id} className="col-12 col-sm-6 col-lg-3">
-                <ProductCard
-                  product={gadget}
-                  isFavorite={isFavorite(gadget.id)}
-                  onToggleFavorite={toggleFavorite}
-                />
-              </div>
+              <ProductCard
+                key={gadget.id}
+                product={gadget}
+                isFavorite={isFavorite(gadget.id)}
+                onToggleFavorite={toggleFavorite}
+              />
             ))}
           </div>
         )}
@@ -74,4 +96,3 @@ export function HomePage() {
     </div>
   )
 }
-

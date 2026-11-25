@@ -66,7 +66,7 @@ export function NoteForm({ onAddNote }: NoteFormProps) {
           id="note-title-input"
           type="text"
           className={`form-control ${titleError ? 'is-invalid' : ''}`}
-          placeholder="Mis. Rencana pembelian / perbandingan"
+          placeholder="Tulis judul catatan atau pertimbangan..."
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           onBlur={() => setTouched((prev) => ({ ...prev, title: true }))}
@@ -82,7 +82,7 @@ export function NoteForm({ onAddNote }: NoteFormProps) {
           id="note-content-input"
           rows={3}
           className={`form-control ${contentError ? 'is-invalid' : ''}`}
-          placeholder="Tuliskan catatan penting tentang gadget ini (min. 10 karakter)..."
+          placeholder="Tulis catatan perbandingan, pengingat harga, atau pertimbangan pembelian (minimal 10 karakter)..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
           onBlur={() => setTouched((prev) => ({ ...prev, content: true }))}

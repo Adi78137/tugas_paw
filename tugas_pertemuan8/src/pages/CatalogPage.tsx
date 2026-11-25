@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams, useLocation } from 'react-router-dom'
 import { useGadgets } from '../hooks/useGadgets'
 import { useFavorites } from '../hooks/useFavorites'
 import { useDebounce } from '../hooks/useDebounce'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
-import { CATEGORY_OPTIONS } from '../utils/constants'
+import { GADGET_CATEGORIES } from '../utils/constants'
 import { queryProducts } from '../utils/productQuery'
 import type { SortOption } from '../types/product'
 import { LoadingSpinner } from '../components/LoadingSpinner'
@@ -14,6 +14,9 @@ import { SearchInput } from '../components/SearchInput'
 import { SelectFilter } from '../components/SelectFilter'
 import { ProductCard } from '../components/ProductCard'
 import { Pagination } from '../components/Pagination'
+import { CategoryChips } from '../components/CategoryChips'
+import { ViewToggle } from '../components/ViewToggle'
+import '../components/Catalog.css'
 
 const SORT_OPTIONS = [
   { value: 'nama-asc', label: 'Nama (A - Z)' },
@@ -24,9 +27,11 @@ const SORT_OPTIONS = [
 ] as const
 
 const VALID_SORT_VALUES = SORT_OPTIONS.map((opt) => opt.value)
+const EMPTY_GADGETS: NonNullable<ReturnType<typeof useGadgets>['data']> = []
 
 export function CatalogPage() {
   useDocumentTitle('Katalog Gadget')
+  const location = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
   const { data: gadgets, loading, error, refetch } = useGadgets()
   const { isFavorite, toggleFavorite } = useFavorites()
@@ -44,6 +49,7 @@ export function CatalogPage() {
   const hal = Number.isInteger(halRaw) && halRaw > 0 ? halRaw : 1
 
   const [searchInput, setSearchInput] = useState(q)
+  const [view, setView] = useState<'grid' | 'list'>('grid')
   const debouncedSearch = useDebounce(searchInput, 300)
 
   useEffect(() => {
@@ -56,6 +62,29 @@ export function CatalogPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch])
+
+  useEffect(() => {
+    const focusSearch = (event: KeyboardEvent) => {
+      if (event.key !== '/' || event.altKey || event.ctrlKey || event.metaKey) {
+        return
+      }
+
+      const target = event.target
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable ||
+          target.matches('input, textarea, select, [contenteditable="true"]'))
+      ) {
+        return
+      }
+
+      event.preventDefault()
+      document.getElementById('catalog-search')?.focus()
+    }
+
+    document.addEventListener('keydown', focusSearch)
+    return () => document.removeEventListener('keydown', focusSearch)
+  }, [])
 
   const updateUrlState = (
     updates: Partial<{
@@ -113,8 +142,22 @@ export function CatalogPage() {
     setSearchParams(new URLSearchParams())
   }
 
+  const allGadgets = gadgets ?? EMPTY_GADGETS
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: allGadgets.length }
+    for (const category of GADGET_CATEGORIES) counts[category] = 0
+    for (const gadget of allGadgets) {
+      counts[gadget.category] = (counts[gadget.category] ?? 0) + 1
+    }
+    return counts
+  }, [allGadgets])
+  const categoryCount = new Set(allGadgets.map((gadget) => gadget.category)).size
+  const hasActiveFilters = Boolean(
+    q || (kategori && kategori !== 'all') || urut !== 'nama-asc',
+  )
+
   const { items, totalItems, totalPages, currentPage } = queryProducts(
-    gadgets ?? [],
+    allGadgets,
     {
       search: q,
       category: kategori,
@@ -125,98 +168,96 @@ export function CatalogPage() {
   )
 
   return (
-    <div className="container py-4">
-      <div className="mb-4">
-        <h1 className="h3 fw-bold mb-1">Katalog Gadget</h1>
-        <p className="text-muted small">
-          Temukan gadget sesuai kategori, spesifikasi, dan harga yang Anda
-          inginkan.
+    <div className="container kg-catalog-page">
+      <header className="kg-page-head">
+        <h1>Katalog Gadget</h1>
+        <p>
+          {error
+            ? 'Jumlah gadget belum tersedia.'
+            : loading
+              ? 'Memuat jumlah gadget dan kategori.'
+              : `${allGadgets.length} produk dari ${categoryCount} kategori`}
         </p>
-      </div>
+      </header>
 
-      <div className="card shadow-sm border-0 mb-4 bg-light">
-        <div className="card-body">
-          <div className="row g-3">
-            <div className="col-12 col-md-6 col-lg-5">
-              <SearchInput
-                id="catalog-search"
-                label="Pencarian Gadget"
-                value={searchInput}
-                onChange={setSearchInput}
-                placeholder="Cari judul, brand, atau tag..."
-              />
-            </div>
-            <div className="col-12 col-sm-6 col-md-3 col-lg-3">
-              <SelectFilter
-                id="catalog-category-filter"
-                label="Kategori"
-                value={kategori}
-                onChange={(newCat) =>
-                  updateUrlState({ kategori: newCat, hal: 1 })
-                }
-                options={CATEGORY_OPTIONS}
-              />
-            </div>
-            <div className="col-12 col-sm-6 col-md-3 col-lg-4">
-              <SelectFilter
-                id="catalog-sort-filter"
-                label="Urutkan Berdasarkan"
-                value={urut}
-                onChange={(newSort) =>
-                  updateUrlState({ urut: newSort, hal: 1 })
-                }
-                options={SORT_OPTIONS}
-              />
-            </div>
+      <section className="kg-catalog-toolbar" aria-label="Cari dan filter produk">
+        <div className="kg-toolbar-main">
+          <div className="kg-search-wrap">
+            <SearchInput
+              id="catalog-search"
+              label="Pencarian Gadget"
+              value={searchInput}
+              onChange={setSearchInput}
+              placeholder="Cari judul, merek, atau tag..."
+            />
+            <kbd className="kg-search-shortcut" aria-hidden="true">/</kbd>
+          </div>
+
+          <div className="kg-catalog-controls">
+            <SelectFilter
+              id="catalog-sort-filter"
+              label="Urutan"
+              value={urut}
+              onChange={(newSort) => updateUrlState({ urut: newSort, hal: 1 })}
+              options={SORT_OPTIONS}
+            />
+            <ViewToggle value={view} onChange={setView} />
           </div>
         </div>
-      </div>
+
+        <CategoryChips
+          value={kategori}
+          counts={categoryCounts}
+          onChange={(newCategory) =>
+            updateUrlState({ kategori: newCategory, hal: 1 })
+          }
+        />
+      </section>
 
       {loading && <LoadingSpinner text="Memuat katalog gadget..." />}
 
       {error && (
         <ErrorMessage
-          message={`Gagal memuat katalog: ${error.message}`}
+          message={`Katalog gagal dimuat: ${error.message}. Periksa koneksi internet, lalu coba lagi.`}
           onRetry={refetch}
         />
       )}
 
       {!loading && !error && (
         <>
-          <div className="d-flex align-items-center justify-content-between mb-3">
-            <span className="text-muted small">
-              Menampilkan <strong>{totalItems}</strong> produk
-              {q ? ` untuk kata kunci "${q}"` : ''}
-            </span>
-            {(q || (kategori && kategori !== 'all') || urut !== 'nama-asc') && (
-              <button
-                type="button"
-                className="btn btn-link btn-sm text-decoration-none p-0"
-                onClick={handleReset}
-              >
-                Reset Filter
+          {hasActiveFilters && (
+            <div className="kg-results-summary">
+              <p aria-live="polite">
+                Menampilkan <strong>{totalItems}</strong> produk
+                {q ? ` untuk kata kunci "${q}"` : ''}
+              </p>
+              <button type="button" onClick={handleReset}>
+                Reset filter
               </button>
-            )}
-          </div>
+            </div>
+          )}
 
           {items.length === 0 ? (
             <EmptyState
-              title="Tidak ada gadget ditemukan"
-              description="Tidak ada produk yang cocok dengan pencarian atau filter yang dipilih."
-              actionLabel="Reset Semua Filter"
+              title="Tidak ada gadget yang cocok"
+              description="Kata kunci atau kategori ini tidak menemukan produk. Hapus pencarian dan filter untuk melihat seluruh katalog."
+              actionLabel="Reset filter"
               onAction={handleReset}
             />
           ) : (
             <>
-              <div className="row g-4">
+              <div
+                className={`kg-product-grid${view === 'list' ? ' is-list' : ''}`}
+              >
                 {items.map((product) => (
-                  <div key={product.id} className="col-12 col-sm-6 col-lg-3">
-                    <ProductCard
-                      product={product}
-                      isFavorite={isFavorite(product.id)}
-                      onToggleFavorite={toggleFavorite}
-                    />
-                  </div>
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    isFavorite={isFavorite(product.id)}
+                    onToggleFavorite={toggleFavorite}
+                    layout={view}
+                    catalogSearch={location.search}
+                  />
                 ))}
               </div>
 
@@ -232,4 +273,3 @@ export function CatalogPage() {
     </div>
   )
 }
-

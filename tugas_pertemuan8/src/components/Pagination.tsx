@@ -41,12 +41,15 @@ export function Pagination({
   const pageItems = getPageItems()
 
   return (
-    <nav aria-label="Navigasi Halaman" className="d-flex justify-content-center my-4">
-      <ul className="pagination mb-0 flex-wrap justify-content-center">
-        <li className={`page-item ${currentPage <= 1 ? 'disabled' : ''}`}>
+    <nav
+      aria-label="Navigasi Halaman"
+      className="d-flex justify-content-center my-4"
+    >
+      <ul className="kg-pagination justify-content-center">
+        <li>
           <button
             type="button"
-            className="page-link"
+            className="kg-page-btn"
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage <= 1}
             aria-label="Halaman Sebelumnya"
@@ -60,25 +63,21 @@ export function Pagination({
             return (
               <li
                 key={`ellipsis-${index}`}
-                className="page-item disabled"
                 aria-hidden="true"
               >
-                <span className="page-link">&hellip;</span>
+                <span className="kg-page-ellipsis">&hellip;</span>
               </li>
             )
           }
 
           const isActive = item === currentPage
           return (
-            <li
-              key={item}
-              className={`page-item ${isActive ? 'active' : ''}`}
-              aria-current={isActive ? 'page' : undefined}
-            >
+            <li key={item}>
               <button
                 type="button"
-                className="page-link"
+                className={`kg-page-btn ${isActive ? 'is-active' : ''}`}
                 onClick={() => onPageChange(item)}
+                aria-current={isActive ? 'page' : undefined}
               >
                 {item}
               </button>
@@ -86,10 +85,10 @@ export function Pagination({
           )
         })}
 
-        <li className={`page-item ${currentPage >= totalPages ? 'disabled' : ''}`}>
+        <li>
           <button
             type="button"
-            className="page-link"
+            className="kg-page-btn"
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage >= totalPages}
             aria-label="Halaman Berikutnya"
@@ -101,4 +100,3 @@ export function Pagination({
     </nav>
   )
 }
-

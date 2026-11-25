@@ -20,7 +20,15 @@ export function SelectFilter({
 }: SelectFilterProps) {
   return (
     <div className="mb-3">
-      <label htmlFor={id} className="form-label fw-semibold">
+      <label
+        htmlFor={id}
+        className="form-label mb-1"
+        style={{
+          color: 'var(--c-ink)',
+          fontWeight: 600,
+          fontSize: '0.875rem',
+        }}
+      >
         {label}
       </label>
       <select
@@ -28,6 +36,7 @@ export function SelectFilter({
         className="form-select"
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        style={{ minHeight: '44px' }}
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -38,4 +47,3 @@ export function SelectFilter({
     </div>
   )
 }
-

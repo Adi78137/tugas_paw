@@ -28,17 +28,15 @@ export function FavoritesPage() {
 
   return (
     <div className="container py-4">
-      <div className="d-flex align-items-start justify-content-between mb-4">
+      <div className="kg-page-head">
         <div>
-          <h1 className="h3 fw-bold mb-1">Favorit Saya</h1>
-          <p className="text-muted small mb-0">
-            {favoriteIds.length} produk tersimpan
-          </p>
+          <h1>Favorit Saya</h1>
+          <p>{favoriteIds.length} produk tersimpan</p>
         </div>
         {favoriteIds.length > 0 && !showConfirm && (
           <button
             type="button"
-            className="btn btn-outline-danger btn-sm"
+            className="btn btn-outline-danger"
             onClick={() => setShowConfirm(true)}
           >
             Hapus Semua
@@ -87,7 +85,6 @@ export function FavoritesPage() {
           actionLabel="Jelajahi Katalog"
           onAction={() => navigate('/katalog')}
         />
-          
       )}
 
       {!loading && !error && favoriteProducts.length > 0 && (

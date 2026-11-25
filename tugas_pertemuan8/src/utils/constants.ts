@@ -7,18 +7,16 @@ export const GADGET_CATEGORIES = [
 
 export type GadgetCategory = (typeof GADGET_CATEGORIES)[number]
 
+/**
+ * Kurs konversi tetap perkiraan dari USD ke IDR.
+ * Bukan harga resmi toko ritel Indonesia; data asli DummyJSON disediakan dalam mata uang USD.
+ */
+export const USD_TO_IDR = 18000
+
 export const CATEGORY_LABELS: Record<GadgetCategory, string> = {
   smartphones: 'Smartphone',
   laptops: 'Laptop',
   tablets: 'Tablet',
   'mobile-accessories': 'Aksesoris Ponsel',
 }
-
-export const CATEGORY_OPTIONS = [
-  { value: 'all', label: 'Semua Kategori' },
-  ...GADGET_CATEGORIES.map((cat) => ({
-    value: cat,
-    label: CATEGORY_LABELS[cat],
-  })),
-] as const
 

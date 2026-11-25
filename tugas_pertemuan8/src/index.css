@@ -1,0 +1,461 @@
+/*
+  Katalog Gadget - Fondasi Desain & Token CSS (Tahap A)
+  Filosofi: antarmuka bersih, tenang, bernuansa zamrud terarah tanpa gradien atau dekorasi berlebih.
+*/
+
+:root {
+  /*
+    Palet Warna Inti:
+    - --c-brand: zamrud primer untuk aksen interaktif, tombol utama, dan indikator aktif.
+    - --c-brand-deep: zamrud gelap untuk bilah navigasi dan teks dengan penekanan tinggi.
+    - --c-ink: warna teks utama, hitam kehijauan alami yang nyaman di mata dibanding hitam murni.
+    - --c-muted: abu-abu kehijauan untuk teks pendukung dan placeholder, lulus kontras 4.5:1.
+    - --c-bg: latar belakang kanvas aplikasi, hijau pucat sangat lembut untuk nuansa sejuk.
+    - --c-surface: latar kartu dan panel, putih bersih untuk kontras lapang.
+    - --c-line: garis pembatas tipis penegas struktur tanpa memberatkan visual.
+    - --c-tint: latar belakang lembut untuk chip status atau penanda ringan.
+    - --c-accent: limau segar, disiapkan khusus untuk tombol aksi utama di Tahap C.
+  */
+  --c-brand: #047857;
+  --c-brand-deep: #044e45;
+  --c-ink: #0f1f1a;
+  --c-muted: #55655e;
+  --c-bg: #f2f9f5;
+  --c-surface: #ffffff;
+  --c-line: #dfe8e3;
+  --c-tint: #e8f6ee;
+  --c-accent: #bcd430;
+
+  /*
+    Radius:
+    - --r-sm (6px): ukuran sudut kompak untuk tombol, input, dan kontrol formulir.
+    - --r-md (12px): lengkung sudut kartu dan kontainer informasi.
+    - --r-full (9999px): bentuk pil khusus badge dan indikator jumlah.
+  */
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-full: 9999px;
+
+  /*
+    Tipografi:
+    Plus Jakarta Sans dipilih karena bentuk geometris ramah dan keterbacaan tinggi pada katalog.
+  */
+  --font-family-base: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /*
+    Transisi:
+    Hanya untuk respon hover dan fokus, dibatasi 150ms agar terasa tanggap tanpa efek lambat.
+  */
+  --motion-fast: 150ms ease;
+
+  /*
+    Penimpaan variabel Bootstrap agar komponen bawaan sinkron dengan sistem desain tanpa !important.
+  */
+  --bs-body-font-family: var(--font-family-base);
+  --bs-body-bg: var(--c-bg);
+  --bs-body-color: var(--c-ink);
+  --bs-primary: var(--c-brand);
+  --bs-primary-rgb: 4, 120, 87;
+  --bs-link-color: var(--c-brand);
+  --bs-link-hover-color: var(--c-brand-deep);
+  --bs-border-color: var(--c-line);
+  --bs-secondary-color: var(--c-muted);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
+}
+
+h1,
+.h1 {
+  font-size: clamp(1.625rem, 1.25rem + 1.5vw, 2.25rem);
+  font-weight: 700;
+  color: var(--c-ink);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+h2,
+.h2 {
+  font-size: clamp(1.35rem, 1.1rem + 1vw, 1.75rem);
+  font-weight: 700;
+  color: var(--c-ink);
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+
+h3,
+.h3 {
+  font-size: clamp(1.15rem, 1rem + 0.6vw, 1.375rem);
+  font-weight: 600;
+  color: var(--c-ink);
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+h4,
+.h4 {
+  font-size: clamp(1.05rem, 0.95rem + 0.3vw, 1.2rem);
+  font-weight: 600;
+  color: var(--c-ink);
+}
+
+p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Angka harga memakai tabular-nums agar lebar angka sejajar rapi */
+.tabular-nums,
+.price-display {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Aksesibilitas fokus keyboard yang tegas dan konsisten */
+:focus-visible {
+  outline: 2px solid var(--c-brand);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--c-brand);
+  outline-offset: 2px;
+}
+
+.form-control,
+.form-select {
+  border-radius: var(--r-sm);
+  border: 1px solid var(--c-line);
+  background-color: var(--c-surface);
+  color: var(--c-ink);
+  min-height: 44px;
+  font-size: 0.95rem;
+  transition: border-color var(--motion-fast);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--c-brand);
+  box-shadow: none;
+  outline: 2px solid var(--c-brand);
+  outline-offset: 1px;
+  background-color: var(--c-surface);
+  color: var(--c-ink);
+}
+
+.form-control::placeholder {
+  color: var(--c-muted);
+}
+
+.btn {
+  border-radius: var(--r-sm);
+  font-weight: 600;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  transition: background-color var(--motion-fast), border-color var(--motion-fast), color var(--motion-fast);
+}
+
+.btn-primary {
+  background-color: var(--c-brand);
+  border-color: var(--c-brand);
+  color: #ffffff;
+}
+
+.btn-primary:hover,
+.btn-primary:active {
+  background-color: var(--c-brand-deep);
+  border-color: var(--c-brand-deep);
+  color: #ffffff;
+}
+
+.btn-primary:disabled,
+.btn-primary.disabled {
+  background-color: var(--c-brand);
+  border-color: var(--c-brand);
+  color: #ffffff;
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Penataan kartu dan kontainer: permukaan putih dengan garis batas 1px */
+.card {
+  background-color: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  box-shadow: none;
+}
+
+/* Pita identitas hijau di atas, mengikuti referensi katalog */
+.kg-header {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  color: #ffffff;
+  background-color: var(--c-brand-deep);
+  border-bottom: 3px solid var(--c-accent);
+}
+
+.kg-header-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas: 'nav brand end';
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 68px;
+}
+
+.kg-brand {
+  grid-area: brand;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-self: center;
+  gap: 0.4rem;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.kg-brand:hover {
+  color: #ffffff;
+}
+
+.kg-brand-accent {
+  color: var(--c-accent);
+}
+
+.kg-header-end {
+  grid-area: end;
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 0.75rem;
+}
+
+.kg-nav {
+  grid-area: nav;
+  display: none;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.kg-nav.is-open {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / -1;
+  align-items: stretch;
+  gap: 0.2rem;
+  padding-bottom: 0.75rem;
+}
+
+.kg-nav-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.8rem;
+  color: rgba(255, 255, 255, 0.84);
+  border-bottom: 2px solid transparent;
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--motion-fast), border-color var(--motion-fast);
+}
+
+.kg-nav-link:hover {
+  color: #ffffff;
+}
+
+.kg-nav-link.active {
+  color: #ffffff;
+  font-weight: 600;
+  border-bottom-color: var(--c-accent);
+}
+
+.kg-fav-badge {
+  padding: 0.15rem 0.55rem;
+  color: var(--c-brand-deep);
+  background-color: var(--c-accent);
+  border-radius: var(--r-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.kg-menu-toggle {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.9rem;
+  color: #ffffff;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color var(--motion-fast), border-color var(--motion-fast);
+}
+
+.kg-menu-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+@media (min-width: 992px) {
+  .kg-nav {
+    display: flex;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .kg-header-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'brand end'
+      'nav nav';
+  }
+
+  .kg-brand {
+    justify-self: start;
+  }
+}
+
+/* Footer hijau tua dengan garis limau sebagai penutup pita identitas */
+.kg-footer {
+  padding: 1.4rem 0;
+  color: rgba(255, 255, 255, 0.82);
+  background-color: var(--c-brand-deep);
+  border-top: 3px solid var(--c-accent);
+  font-size: 0.82rem;
+}
+
+.kg-footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.4rem 1.5rem;
+}
+
+.kg-footer p {
+  margin: 0;
+  max-width: 68ch;
+}
+
+.kg-footer .kg-footer-credit {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.kg-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.kg-page-btn {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--c-ink);
+  background-color: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--motion-fast), border-color var(--motion-fast), color var(--motion-fast);
+}
+
+.kg-page-btn:hover:not(:disabled) {
+  background-color: var(--c-tint);
+  border-color: var(--c-brand);
+  color: var(--c-brand-deep);
+}
+
+.kg-page-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background-color: var(--c-bg);
+  border-color: var(--c-line);
+  color: var(--c-muted);
+}
+
+.kg-page-btn.is-active {
+  background-color: var(--c-brand);
+  border-color: var(--c-brand);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.kg-page-ellipsis {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-muted);
+  font-size: 0.875rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.kg-spinner {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .kg-spinner {
+    animation: none !important;
+  }
+}
+
