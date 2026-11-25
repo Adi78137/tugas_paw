@@ -21,5 +21,10 @@
     "title": "Katalog Kopi Nusantara (React)", 
     "status": "Terbuka", 
     "folder": "pertemuan7" 
+  },
+  { "pertemuan": 8, 
+    "title": "Katalog Gadget  (React)", 
+    "status": "Terbuka", 
+    "folder": "pertemuan8" 
   }
 ]
